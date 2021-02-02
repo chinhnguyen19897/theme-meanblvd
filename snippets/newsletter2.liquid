@@ -1,0 +1,23 @@
+<div class="newsletter {% if newsletter == 'center' %}center{% endif %}">
+  <p class="message"></p>
+
+   {% form 'create_customer' %}
+
+    {% if settings.display_first_name %}
+      <input type="text" value="" name="customer[first_name]" id="first_name" class="large" size="30" placeholder="{{ 'general.newsletter_form.subscriber_first_name' | t }}" />
+    {% endif %}
+    {% if settings.display_last_name %}
+      <input id="last_name" class="large" type="text" name="customer[last_name]" placeholder="{{ 'general.newsletter_form.subscriber_last_name' | t }}" />
+    {% endif %}
+    	<input class="input-group__field newsletter__input{% if form.errors %} input--error{% endif %}" type="email" value="" name="customer[email]" id="email" placeholder="{{ 'general.newsletter_form.placeholder' | t }}">	
+
+    	<input type="password" value="" name="customer[password]" id="password" class="large password" size="30" placeholder="Password" />
+      <input type="hidden" name="contact[tags]" value="newsletter">
+		<div class="action_bottom">
+            <input class="btn button_signup" type="submit" value="{{ 'customer.register.sign_up' | t }}" />
+          </div>
+  {% endform %}
+    <div class="end-popup">
+      <a class="close-popup" href="javascript:;">I WIll PAY FULL PRICE!</a>
+    </div>
+</div>

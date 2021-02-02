@@ -1,0 +1,26 @@
+@media screen and (min-width: 769px) {
+
+  .smile-launcher-frame-container, .smile-launcher-border-radius-circular,.smile-launcher-image-only,.smile-launcher-closed, .smile-launcher-animate{
+    z-index: 999 !important;
+    }
+    #smile-ui-container{
+      z-index:999 !important;
+    }
+      }
+
+      @media screen and (max-width: 768px) {
+
+  .smile-launcher-frame-container, .smile-launcher-border-radius-circular,.smile-launcher-image-only,.smile-launcher-closed, .smile-launcher-animate{
+        left: 30px !important;
+        bottom: 22px !important;
+        size: 70% !important;
+        z-index: 999 !important;
+      }
+    #smile-ui-container{
+      z-index:999 !important;
+    }
+    .smile-launcher-border-radius-circular{ left: 30px !important }
+    .smile-launcher-image-only{ left: 30px !important }
+    .smile-launcher-closed{ left: 30px !important }
+    .smile-launcher-animate{ left: 30px !important }  
+}

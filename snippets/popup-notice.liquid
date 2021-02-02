@@ -1,0 +1,74 @@
+
+{% if settings.popup_notice %}
+	
+	<a id="notice" href="#target"></a>
+	<div style="display:none">
+		<div id="target">
+			
+			{% if settings.popup_notice_link != blank %}
+				<a href="{{ settings.popup_notice_link }}">
+			{% endif %}
+
+			{% if settings.popup_notice_title != blank %}
+				<p class="title-notice">
+					{{ settings.popup_notice_title | escape }}
+				</p>
+			{% endif %}
+
+			{% if settings.popup_notice_image != blank %}
+				<div class="img-pc"> 
+					{{ settings.popup_notice_image | img_url '580x', scale: 2 | img_tag: settings.popup_notice_image.alt, 'blur-up transition-in lazyload' }}
+				</div>
+			{% endif %}
+			{% if settings.popup_notice_image_mobile != blank %}
+				<div class="img-mobile"> 
+					{{ settings.popup_notice_image_mobile | img_url '580x', scale: 2 | img_tag: settings.popup_notice_image.alt, 'blur-up transition-in lazyload' }}
+				</div>
+			{% endif %}
+
+			{% if settings.popup_notice_text != blank %}
+				{{ settings.popup_notice_text }}
+			{% endif %}
+
+			{% if settings.popup_notice_link != blank %}
+				</a>
+			{% endif %}
+
+			{% if settings.popup_notice_form != blank %}
+				{% render 'newsletter3' %}
+			{% endif %}
+		</div>
+	</div>	
+
+	<script type="text/javascript">
+		function openPopupNotice() {
+			setTimeout( () => {
+				$('#notice').fancybox({wrapCSS: 'popup_notice', padding:[40, 40, 40, 40], scrolling: true, maxWidth :{% if 
+					settings.popup_notice_max_width != blank %} {{ settings.popup_notice_max_width }} {% else %} 600 {% endif %}, minWidth: 250 });
+				$('#notice').trigger('click');
+			},
+			{% if settings.popup_notice_seconds != blank %} {{ settings.popup_notice_seconds }} {% else %} 2 {% endif %}*1000);			
+		}
+		$(function() {
+      		var popup = $.cookie('popup');
+     	 	var cookie_enabled = {% if settings.popup_notice_days != blank and settings.popup_notice_days != "0" %}true{% else %}false{% endif %};
+
+      		if (cookie_enabled && popup == 'open') {
+          return false;
+     		 } else if ({{ settings.popup_notice_mobile }} || $(window).width() > 768) {
+        	openPopupNotice();
+      		}
+      		if (cookie_enabled) {
+       		 $.cookie('popup', 'open', { expires: {{ settings.popup_notice_days }} });
+      		}
+    	});
+		$('.close-popup').on('click', (event) => {
+      event.preventDefault();
+      $('.fancybox-overlay').fadeOut('fast');
+      $('.fancybox-wrap').remove();
+      $('.fancybox-overlay').remove();
+      $('html').removeClass('fancybox-margin');
+      $('html').removeClass('fancybox-lock');                                     
+    })
+	</script>
+{% endif %}

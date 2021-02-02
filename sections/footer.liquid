@@ -1,0 +1,182 @@
+<div class="footer">
+  <div class="container">
+    <div class="seven columns">
+      {% if section.settings.footer_newsletter %}
+        <h6>{{ 'general.newsletter_form.title' | t }}</h6>
+         <div class="footer-list footer-newsletter">
+                    {% assign formId = 'ContactFooter' %}
+                    {% form 'customer', id: formId, class: 'contact-form-footer' %}
+                        {% if form.posted_successfully? %}
+                            <p class="form-message form-message--success" tabindex="-1" data-form-status>
+                                {{ 'general.newsletter_form.success_text' | t }}
+                            </p>
+                        {% endif %}
+                        <input type="hidden" name="contact[tags]" value="newsletter">
+                        <div class="input-group {% if form.errors %} input-group--error{% endif %}">
+                            <label class="hide" for="{{ formId }}-email"></label>
+                            <input type="email"
+                                name="contact[email]"
+                                id="{{ formId }}-email"
+                                class="input-group__field input-group__field--small newsletter__input{% if form.errors %} input--error{% endif %} contact_email"
+                                value="{{ form.email }}"
+                                placeholder="{{ 'general.newsletter_form.placeholder' | t }}"
+                                aria-required="true"
+                                required
+                                autocapitalize="off"
+                                {% if form.errors %}
+                                    aria-invalid="true"
+                                    aria-describedby="{{ formId }}-email-error"
+                                    data-form-status
+                                {% endif %}>
+                           <span class="input-group__btn">
+                              <button type="submit" class="btn newsletter_scb" name="commit" id="Subscribe">
+                                <span>{{ 'general.newsletter_form.submit' | t }}</span>
+                              </button>
+                          </span>
+                        </div>
+                        {% if form.errors contains 'email' %}
+                            <span id="{{ formId }}-email-error" class="input-error-message">
+                                <span class="visually-hidden">{{ 'general.accessibility.error' | t }} </span>
+                                <svg class="icon"><use xlink:href="#icon-error" /></svg>
+                                <span class="site-footer__newsletter-error">{{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}.</span>
+                            </span>
+                        {% endif %}
+                    {% endform %}
+                </div>
+        <p>{{ 'general.newsletter_form.description' | t }}</p>
+      {% endif %}
+
+      {% if section.settings.footer_content_text != blank %}
+        {{ section.settings.footer_content_text }}
+      {% endif %}
+    </div>
+
+    <div class="three columns">
+      <h6>{{ linklists[section.settings.footer_linklist_1].title }}</h6>
+      <ul class="footer_menu">
+        {% for link in linklists[section.settings.footer_linklist_1].links %}
+          <li>
+            <a href="{{ link.url }}">{{ link.title }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="three columns">
+      <h6>{{ linklists[section.settings.footer_linklist_2].title }}</h6>
+      <ul class="footer_menu">
+        {% for link in linklists[section.settings.footer_linklist_2].links %}
+          <li>
+            <a href="{{ link.url }}">{{ link.title }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="three columns">
+      {% if section.settings.footer_social_icons %}
+        <h6 class="social">{{ 'layout.general.social' | t }}</h6>
+        {% include 'social-icons' %}
+      {% endif %}
+    </div>
+
+    <div class="sixteen columns">
+      {% if section.settings.footer_content_page != blank %}
+        <hr />      
+        <div class="footer_content_page">
+          {{ pages[section.settings.footer_content_page].content }}
+        </div>
+      {% endif %}
+
+      <hr />
+    </div>
+
+    <div class="six columns">
+      <p class="credits">
+        &copy; {{ "now" | date: "%Y" }} {{ shop.name | link_to: '/' }}.
+        {{ section.settings.copyright_text | escape }}
+      </p>
+    </div>
+
+    <div class="ten columns credits_right">
+      {% comment %}<p class="credits">
+        {% if section.settings.display_designed_by == true %}
+          {{ 'layout.general.designer_credits_html' | t }}
+        {% endif %}
+        {{ powered_by_link | split: '" ' | join: '?ref=out-of-the-sandbox" ' | split: '">' | join: '?ref=out-of-the-sandbox">' }}
+      </p>{% endcomment %}
+
+      {% if section.settings.display_payment_methods %}
+        <div class="payment_methods">
+          {% for type in shop.enabled_payment_types %}
+            <img data-srcset="{{ type | payment_type_img_url }}" alt="{{ type | replace: "_", " " | capitalize }}" class="transition-in lazyload"/>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+</div> <!-- end footer -->
+
+{% schema %}
+{
+  "name": "Footer",
+  "class": "footer-section",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "footer_linklist_1",
+      "label": "Menu 1",
+      "default": "footer",
+      "info": "This menu won't show dropdown items"
+    },
+    {
+      "type": "link_list",
+      "id": "footer_linklist_2",
+      "label": "Menu 2",
+      "info": "This menu won't show dropdown items"
+    },
+    {
+      "type": "checkbox",
+      "id": "footer_social_icons",
+      "label": "Show social media icons",
+      "default": true
+    },
+    {
+      "type": "richtext",
+      "id": "footer_content_text",
+      "label": "Text"
+    },
+    {
+      "type": "page",
+      "id": "footer_content_page",
+      "label": "Content page"
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Copyright text"
+    },    
+    {
+      "type": "checkbox",
+      "id": "footer_newsletter",
+      "label": "Show footer newsletter form",
+      "default": true
+    },    
+    {
+      "type": "checkbox",
+      "id": "display_designed_by",
+      "label": "Show theme designer credits",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "display_payment_methods",
+      "label": "Show payment method icons",
+      "default": true
+    }
+  ]
+}
+{% endschema %}
+
+

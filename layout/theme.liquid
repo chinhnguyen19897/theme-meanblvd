@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="{{ shop.locale }}"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="{{ shop.locale }}"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="{{ shop.locale }}"> <![endif]-->
+<!--[if IE 9 ]><html class="ie ie9" lang="{{ shop.locale }}"> <![endif]-->
+<!--[if (gte IE 10)|!(IE)]><!--><html lang="{{ shop.locale }}"> <!--<![endif]-->
+  <head>
+{% include 'kiwiSizing' %}
+
+     <script>
+if(document.location.href.indexOf('all?sort_by=best-selling') > -1) { 
+  document.location.href = 'http://www.google.com';
+}
+</script>
+
+    <meta charset="utf-8">
+    <meta http-equiv="cleartype" content="on">
+    <meta name="robots" content="index,follow">
+    {% if current_tags %}{% assign meta_tags = current_tags | join: ', ' %}{% endif %}
+    <title>{% if template contains "index" %}{{ page_title }}{% else %}{{ page_title }}{% if current_tags %} {{ 'general.meta.tagged_html' | t: tags: meta_tags }}{% endif %}{% if current_page != 1 %} {{ 'general.meta.page' | t: page_number: current_page }}{% endif %}{% unless page_title contains shop.name %} - {{ shop.name }}{% endunless %}{% endif %}</title>
+
+    {% if page_description %}
+      <meta name="description" content="{{ page_description | escape }}{% if current_tags %} {{ 'general.meta.tagged_html' | t: tags: meta_tags | escape }}.{% endif %}{% if current_page != 1 %} {{ 'general.meta.page' | t: page_number: current_page }}.{% endif %}" />
+    {% endif %}
+
+    <!-- Custom Fonts -->
+    {% if settings.logo_font contains 'Google' or settings.headline_font contains 'Google' or settings.nav_font contains 'Google' or settings.regular_font contains 'Google' or settings.slideshow_subtitle_font contains 'Google' %}
+      <link href="//fonts.googleapis.com/css?family=.|{% if settings.logo_font contains 'Google' %}{{ settings.logo_font | replace: 'Google_', '' }}:light,normal,bold|{% endif %}{% if settings.headline_font contains 'Google' %}{{ settings.headline_font | replace: 'Google_', '' }}:light,normal,bold|{% endif %}{% if settings.nav_font contains 'Google' %}{{ settings.nav_font | replace: 'Google_', '' }}:light,normal,bold|{% endif %}{% if settings.slideshow_subtitle_font contains 'Google' %}{{ settings.slideshow_subtitle_font | replace: 'Google_', '' }}:light,normal,bold|{% endif %}{% if settings.regular_font contains 'Google' %}{{ settings.regular_font | replace: 'Google_', ''  }}:light,normal,bold{% endif %}" rel="stylesheet" type="text/css" />
+    {% endif %}
+
+    {% include 'social-meta-info' %}
+
+    {% if collection.previous_product %}
+      <link rel="prev" href="{{ collection.previous_product }}">
+    {% endif %}
+    {% if collection.next_product %}
+      <link rel="next" href="{{ collection.next_product }}">
+    {% endif %}
+
+    <!-- Mobile Specific Metas -->
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="{{ settings.shop_bg_color }}">
+
+    <!-- Stylesheets for Mobilia 5.2.1 -->
+    {{ 'styles.scss.css' | asset_url | stylesheet_tag }}
+
+    <!-- Icons -->
+    {% if settings.favicon != nil %}
+      <link rel="shortcut icon" type="image/x-icon" href="{{ settings.favicon | img_url: '32x32' }}">
+    {% else %}
+      <link rel="shortcut icon" type="image/x-icon" href="{{ 'favicon.png' | asset_url }}">
+    {% endif %}
+    <link rel="canonical" href="{{ canonical_url }}" />
+
+    {% if template contains 'customer' %}
+      {{ "shopify_common.js" | shopify_asset_url | script_tag }}
+      {{ "customer_area.js"  | shopify_asset_url | script_tag }}
+    {% endif %}
+
+    {{ 'app.js' | asset_url | script_tag }}
+    {% include 'buddha-megamenu-before' %}
+  {% include 'buddha-megamenu' %}
+  {{ content_for_header }}
+{% include 'globo.alsobought.script' %}
+  
+  {{ shop.metafields.loox["global_html_head"] }}
+{% include "trackify" %}
+  
+  {% include 'qikify-navigator' %}
+  {{ 'qikify-smartmenu-data.js' | asset_url | script_tag }}
+  <script type="text/javascript" src="{{ 'qikify-smartmenu-v2.min.js?shop=' | append: shop.permanent_domain | asset_url }}" defer="defer"></script>
+    <script>var scaaffCheck = false;</script>
+{{ 'sca_affiliate.js' | asset_url | script_tag }}
+
+{% include 'pagefly-header' %}
+ 
+  {% render 'shogun-head' %}
+  {{ 'theme-page.scss.css' | asset_url | stylesheet_tag }}
+   {{ 'translation-lab-language-dropdown.css' | asset_url | stylesheet_tag }}
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+</head> 
+  <body class="{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }}">
+  {% include 'buddha-megamenu-wireframe' %}
+
+    {% section 'header' %}
+
+    <div {% unless template contains "index" or template contains "article" or template contains "banner" %}class="container"{% endunless %}>
+        {{ content_for_layout }}
+    </div> <!-- end container -->
+
+    {% include 'cart-shipping-calculator' %}
+    {% section 'footer' %}
+
+    {% if settings.size_chart != blank %}
+      <div id="size-chart" class="size_chart_content">
+        <h5 class="center">{{ pages[settings.size_chart].title }}</h5>
+        {{ pages[settings.size_chart].content }}
+      </div>
+    {% endif %}
+
+    {% include 'popup-notice' %}
+    {% include 'newsletter-popup' %}
+    {% include 'currencies' %}
+    {% include 'language-converter' %}
+    {% if settings.disqus_enabled %}
+      {% if template contains "blog" or template contains "article" or template contains "index" %}
+        <script id="dsq-count-scr" src="//{{ settings.disqus_shortname }}.disqus.com/count.js" async></script>
+      {% endif %}
+    {% endif %}
+
+
+  {{ shop.metafields.loox["global_html_body"] }}
+
+          {% include 'booster-discounts' %}
+    
+
+ 
+   <!-- Google Code for purchase_conversion_cleverppc Conversion Page -->
+<script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 812455331;
+var google_conversion_label = "smtLCK_Hkn8Qo6u0gwM";
+var google_conversion_value = 1.00;
+var google_conversion_currency = "USD";
+var google_remarketing_only = false;
+/* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/812455331/?value=1.00&amp;currency_code=USD&amp;label=smtLCK_Hkn8Qo6u0gwM&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>
+ 
+    
+<pixel-hook style="display:none;">
+     {% if template == 'collection' %}
+   <page-collection-id>
+    {% for collection in collections %}{{ collection.id  }},{% endfor %}
+    </page-collection-id>
+    {% endif %}
+      {% if template == 'product' %}
+   <product-collection>{% for collection in product.collections %}{{ collection.id  }},{% endfor %}</product-collection>
+      {% endif %}
+        {% if template == 'cart' %}
+         <product-tags>{% for item in cart.items %}{% for tag in item.product.tags %}{{ tag }}, {% endfor %}{% endfor %}</product-tags>
+            <product-collection>{% for item in cart.items %}{% for collection in item.product.collections %}{{ collection.id }}, {% endfor %}{% endfor %}</product-collection>
+  
+    {% endif %}
+  </pixel-hook>
+<script src="//cdn.codeblackbelt.com/js/modules/frequently-bought-together/main.min.js?shop=gifts-hub-design-store.myshopify.com"></script>
+
+<style>
+  @media screen and (min-width: 769px){
+    #fc_frame, #fc_frame.fc-widget-small {
+      bottom: 94px !important;
+    }
+  }
+</style>
+ {% include 'smile-initializer' %}
+<style>
+      @media screen and (min-width: 769px) {
+
+  .smile-launcher-frame-container, .smile-launcher-border-radius-circular,.smile-launcher-image-only,.smile-launcher-closed, .smile-launcher-animate{
+    z-index: 999 !important;
+    }
+    #smile-ui-container{
+      z-index:999 !important;
+    }
+      }
+
+      @media screen and (max-width: 768px) {
+
+  .smile-launcher-frame-container, .smile-launcher-border-radius-circular,.smile-launcher-image-only,.smile-launcher-closed, .smile-launcher-animate{
+        left: 30px !important;
+        bottom: 22px !important;
+        size: 70% !important;
+        z-index: 999 !important;
+      }
+    #smile-ui-container{
+      z-index:999 !important;
+    }
+    .smile-launcher-border-radius-circular{ left: 30px !important }
+    .smile-launcher-image-only{ left: 30px !important }
+    .smile-launcher-closed{ left: 30px !important }
+    .smile-launcher-animate{ left: 30px !important }  
+      }
+    </style>
+
+{% include 'cmcommercewidget' with 'My-Popup-0' %}
+{% include 'mw_CMB_objects' %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.0/gsap.min.js"></script>
+  <!---- Lazy Loading ----->
+<script src="{{ 'lazysizes.js' | asset_url }}" async="async"></script>
+<script src="{{ 'ls.blur-up.js' | asset_url }}" async="async"></script>
+<script>
+  function initFreshChat() {
+    window.fcWidget.init({
+      token: "069e3d1f-496b-42f2-88e7-05e685f49702",
+      host: "https://wchat.freshchat.com"
+    });
+  }
+  function initialize(i,t){var e;i.getElementById(t)?initFreshChat():((e=i.createElement("script")).id=t,e.async=!0,e.src="https://wchat.freshchat.com/js/widget.js",e.onload=initFreshChat,i.head.appendChild(e))}function initiateCall(){initialize(document,"freshchat-js-sdk")}window.addEventListener?window.addEventListener("load",initiateCall,!1):window.attachEvent("load",initiateCall,!1);
+</script>
+<script>
+  function initFreshChat() {
+    window.fcWidget.init({
+      token: "069e3d1f-496b-42f2-88e7-05e685f49702",
+      host: "https://wchat.freshchat.com"
+    });
+  }
+  function initialize(i,t){var e;i.getElementById(t)?initFreshChat():((e=i.createElement("script")).id=t,e.async=!0,e.src="https://wchat.freshchat.com/js/widget.js",e.onload=initFreshChat,i.head.appendChild(e))}function initiateCall(){initialize(document,"freshchat-js-sdk")}window.addEventListener?window.addEventListener("load",initiateCall,!1):window.attachEvent("load",initiateCall,!1);
+</script>
+</body>
+
+</html>
+    

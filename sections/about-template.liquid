@@ -1,0 +1,83 @@
+<div class="page page-about">
+	{% if page.content.size > 0 %}
+		<div class="page-container mt-5 mb-5">
+			{{ page.content }}
+		</div>
+	{% endif %}
+
+
+	{% for block in section.blocks %}
+	<div class="about-content{% if block.settings.layout == 'right'%} about-content_right {% endif %}">
+		<div class="about-content_img"{% if block.settings.image != blank %} style="background-image: url({{block.settings.image | img_url: 'master'}});"
+		{% endif %}>
+			{% if block.settings.image == blank %}
+				<div class="placeholder-img">
+					{{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg'}}
+				</div>
+			{% endif %}
+		</div>
+		<div class="about-main_content">
+			<div class="content">
+			{{ block.settings.description }}
+		 	</div>
+		</div>
+	</div>
+	{% endfor %}
+</div>
+
+{% schema %}
+{
+	"name": "Page Content",
+	"class": "page-content",
+	"max_blocks": 6,
+	"settings": [
+	],
+	"blocks": [
+		{
+			"type": "about_content",
+			"name": "About Content",
+			"settings": [
+				{
+					"type": "header",
+					"content": "Layout"
+				},
+				{
+					"type": "select",
+					"id": "layout",
+					"label": "Layout",
+					"default": "left",
+					"options": [
+						{
+							"value": "left", 
+							"label": "Image Left"
+						},
+						{
+							"value": "right",
+							"label": "Image Right"
+						}
+					]
+				},
+				{
+					"type": "header",
+					"content": "Banner Image"
+				},
+				{
+					"type": "image_picker",
+					"id": "image",
+					"label": "Image"
+				},
+				{
+					"type": "header",
+					"content": "Content"
+				},
+				{
+                    "type": "html",
+                    "id": "description",
+                    "label": "HTML Source",
+                    "default": "<p>Use overlay text to give your customers insight into your brand. Select image and text that relates to your style and story.</p>"
+                }	
+			]
+		}
+	]
+}
+{% endschema %}

@@ -1,0 +1,111 @@
+{% if section.settings.display_sidebar == false %}
+    <style>
+        .page .page-sidebar,
+        .page .sidebar_mobile_wrapper .sidebar_mobile {
+            display: none !important;
+        }
+
+        .page .page-content,
+        .page .page-sidebar + .page-content {
+            display: block;
+            width: 100%;
+            padding-left: 0;
+        }
+    </style>
+{% endif %}
+
+{% if section.settings.position_sidebar == 'right' %}
+    <style>
+        @media only screen and (min-width: 1025px) {
+            .page .page-sidebar {
+                float: right;
+                padding-left: 15px;
+                padding-right: 0;
+            }
+
+            .page .page-sidebar + .page-content {
+                padding-left: 0;
+                padding-right: 15px;
+            }
+        }
+    </style>
+{% endif %}
+
+{% if section.settings.display_sidebar %}
+    {% comment %}<div class="page-sidebar_close">
+        <a href="javascript:void(0)" class="close">
+            <span class="icon">">&#215;</span>
+            <span class="text">{{ 'general.accessibility.close_modal' | t }}</span>
+        </a>
+    </div>{% endcomment %}
+    <div class="page-sidebar__content">
+        {% for block in section.blocks %}
+            {% case block.type %}
+                {% when 'products' %}
+                    {% render 'widget-promotion', block: block %}
+            {% endcase %}
+         {% endfor %}   
+    </div>
+{% endif %}
+
+{% schema %}
+{
+    "name": "Page Sidebar",
+    "class": "page-sidebar",
+    "settings": [
+        {
+            "type": "checkbox",
+            "id": "display_sidebar",
+            "label": "Enable Sidebar",
+            "default": false
+        },
+        {
+            "type": "select",
+            "id": "position_sidebar",
+            "label": "Position Sidebar on:",
+            "options": [
+                {
+                    "value": "left",
+                    "label": "Left"
+                },
+                {
+                    "value": "right",
+                    "label": "Right"
+                }
+            ],
+            "default": "left"
+        }
+    ],
+    "blocks": [
+        {
+            "type": "products",
+            "name": "Products Block",
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Heading",
+                    "default": "Heading"
+                },
+                {
+                    "type": "radio",
+                    "id": "article_id",
+                    "label": "Show all \/ Only a few Collection",
+                    "options": [
+                        {
+                            "value": "show_all",
+                            "label": "Show Collection (1 level)"
+                        }
+                    ]
+                },
+                {
+                    "type": "link_list",
+                    "id": "link_list",
+                    "label": "Choose a Collection",
+                    "default": "main-menu"
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}

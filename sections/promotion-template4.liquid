@@ -1,0 +1,58 @@
+
+<div class="page page-promo">
+	{% if page.content.size > 0 %}
+		<div class="container">
+			{{page.content}}
+		</div>
+	{% endif %}
+
+	<div class="promo-content" >
+		{% if section.settings.image %}
+		<img src="{{section.settings.image | img_url: '900x'}}" class="promo-img">
+		{% endif %}
+		
+		{% if section.settings.image == blank %}
+				<div class="placeholder-img">
+					{{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg'}}
+				</div>
+			{% endif %}
+		</div>
+
+	<div class="promo-main_content">
+		<div class="promo-page_content">
+			{{ section.settings.description }}
+		</div>
+	</div>
+
+</div>
+ 
+{% schema %}
+{ 
+	"name": "Promo page",
+	"class": "promo-page",
+	"settings":[
+		{
+			"type": "header",
+			"content": "Banner Image"
+		},
+		{
+			"type": "image_picker",
+			"id": "image",
+			"label": "Image"
+		},
+		{
+			"type": "header",
+			"content": "Content"
+		},
+		{
+			"type": "html",
+			"id": "description",
+			"label": "HTML Source",
+			"default": "<p>Write your promo</p>"
+		}
+		
+	]
+}
+
+
+{% endschema %}

@@ -1,0 +1,5 @@
+ @media screen and (min-width: 769px){
+    #fc_frame, #fc_frame.fc-widget-small {
+      bottom: 94px !important;
+    }
+ }

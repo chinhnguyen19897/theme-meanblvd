@@ -69,8 +69,8 @@
     {% assign src = page.content | split: 'src="' %}
     {% assign src = src[1] | split: '"' | first | remove: 'https:' | remove: 'http:' %}
     {% if src %}
-      <meta property="og:image" content="http:{{ image.src | img_url: '1200x' }}">
-      <meta property="og:image:secure_url" content="http:{{ image.src | img_url: '1200x' }}">
+      <meta property="og:image" content="http:{{ src }}">
+      <meta property="og:image:secure_url" content="http:{{ src }}">
     {% endif %}
   {% endif %}
 {% else %}

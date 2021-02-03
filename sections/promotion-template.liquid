@@ -6,7 +6,7 @@
 		</div>
 	{% endif %}
 
-	<div class="promo-content" >
+{% comment %}	<div class="promo-content" >
 		{% if section.settings.image %}
 		<img src="{{section.settings.image | img_url: '900x'}}" class="promo-img">
 		{% endif %}
@@ -16,7 +16,7 @@
 					{{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg'}}
 				</div>
 			{% endif %}
-		</div>
+		</div>{% endcomment %}
 
 	<div class="promo-main_content">
 		<div class="promo-page_content">
